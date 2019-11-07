@@ -41,7 +41,7 @@ export function applyDefaults<T>(
 
   const result = clone(obj || {})
 
-  for (const [key, val] of Object.entries(defaults)) {
+  for (const [key, val] of forEachObject(defaults)) {
     if (isObject(val)) {
       result[key] = applyDefaults(result[key], val)
     } else if (overwrite || result[key] === undefined) {
