@@ -60,11 +60,11 @@ export class ObjectCache<T> {
     yield *this
   }
 
-  /** @inheritdoc */
+  /**
+   * Iterates through the items in the cache.
+   */
   *[Symbol.iterator](): IterableIterator<T> {
-    for (const item of this._items) {
-      yield item
-    }
+    yield *this._items
   }
   
 }
