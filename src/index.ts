@@ -1,5 +1,6 @@
 export { ObjectCache } from './ObjectCache'
 export { CompareCache } from './CompareCache'
+export { StringWalker } from './StringWalker'
 
 /**
  * Applies the mixin to a given class.
