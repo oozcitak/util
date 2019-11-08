@@ -227,6 +227,8 @@ export function isMap(x: any): x is Map<string, any> {
 export function isEmpty(x: any): boolean {
   if (isArray(x)) {
     return !x.length
+  } else if (isMap(x)) {
+    return !x.size
   } else if (isObject(x)) {
     for(const key in x) {
       if(x.hasOwnProperty(key)) {
