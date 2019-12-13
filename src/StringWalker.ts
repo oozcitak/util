@@ -65,22 +65,30 @@ export class StringWalker {
 
   /**
    * Returns the remaining string.
+   * 
+   * @param count - the number of characters to return
    */
-  remaining(): string {
+  remaining(count?: number): string {
     if (this._remaining === undefined) {
       this._remaining = (this.eof ? 
-        "" : this._chars.slice(this._pointer + 1).join(''))
+        "" : (count === undefined ? 
+          this._chars.slice(this._pointer + 1).join('') :
+          this._chars.slice(this._pointer + 1, this._pointer + 1 + count).join('')))
     }
     return this._remaining
   }
 
   /**
    * Returns the substring from the current character to the end of string.
+   * 
+   * @param count - the number of characters to return
    */
-  substring(): string {
+  substring(count?: number): string {
     if (this._substring === undefined) {
       this._substring = (this.eof ? 
-        "" : this._chars.slice(this._pointer).join(''))
+        "" : (count === undefined ? 
+          this._chars.slice(this._pointer).join('') :
+          this._chars.slice(this._pointer, this._pointer + count).join('')))
     }
     return this._substring
   }
