@@ -41,6 +41,7 @@ describe('StringWalker', () => {
     const walker = new StringWalker("input")
     expect(walker.remaining()).toBe("nput")
     expect(walker.remaining()).toBe("nput")
+    expect(walker.remaining(2)).toBe("np")
     walker.pointer = 10
     expect(walker.remaining()).toBe("")
   })
@@ -49,6 +50,7 @@ describe('StringWalker', () => {
     const walker = new StringWalker("input")
     expect(walker.substring()).toBe("input")
     expect(walker.substring()).toBe("input")
+    expect(walker.substring(2)).toBe("in")
     walker.pointer = 10
     expect(walker.substring()).toBe("")
   })

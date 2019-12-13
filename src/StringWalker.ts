@@ -8,8 +8,8 @@ export class StringWalker {
   private _pointer: number = 0
   private _codePoint: number | undefined
   private _c: string | undefined
-  private _remaining: string | undefined
-  private _substring: string | undefined
+  private _remaining: string[] | undefined
+  private _substring: string[] | undefined
 
   /**
    * Initializes a new `StringWalker`.
@@ -70,12 +70,9 @@ export class StringWalker {
    */
   remaining(count?: number): string {
     if (this._remaining === undefined) {
-      this._remaining = (this.eof ? 
-        "" : (count === undefined ? 
-          this._chars.slice(this._pointer + 1).join('') :
-          this._chars.slice(this._pointer + 1, this._pointer + 1 + count).join('')))
+      this._remaining = (this.eof ? [] : this._chars.slice(this._pointer + 1))
     }
-    return this._remaining
+    return (count === undefined ? this._remaining : this._remaining.slice(0, count)).join('')
   }
 
   /**
@@ -85,12 +82,9 @@ export class StringWalker {
    */
   substring(count?: number): string {
     if (this._substring === undefined) {
-      this._substring = (this.eof ? 
-        "" : (count === undefined ? 
-          this._chars.slice(this._pointer).join('') :
-          this._chars.slice(this._pointer, this._pointer + count).join('')))
+      this._substring = (this.eof ? [] : this._chars.slice(this._pointer))
     }
-    return this._substring
+    return (count === undefined ? this._substring : this._substring.slice(0, count)).join('')
   }
 
   /**
