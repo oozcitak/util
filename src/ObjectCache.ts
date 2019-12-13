@@ -54,6 +54,13 @@ export class ObjectCache<T> {
   get length(): number { return this._items.size }
 
   /**
+   * Applies the given callback function to all elements of the cache.
+   */
+  forEach(callback: (item: T) => void): void {
+    this._items.forEach(callback)
+  }
+
+  /**
    * Iterates through the items in the cache.
    */
   *entries(): IterableIterator<T> {
