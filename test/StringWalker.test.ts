@@ -194,4 +194,31 @@ describe('StringWalker', () => {
     expect(walker.eof).toBe(true)
   })
 
+  test('take()', () => {
+    const walker = new StringWalker("input   x")
+    expect(walker.take(0)).toBe("")
+    expect(walker.take(5)).toBe("input")
+    expect(walker.c).toBe(" ")
+    expect(walker.take(c => c === "x")).toBe("")
+    expect(walker.take(c => c === " ")).toBe("   ")
+    expect(walker.c).toBe("x")
+    walker.take(1)
+    expect(walker.eof).toBe(true)
+  })
+
+  test('skip()', () => {
+    const walker = new StringWalker("input   x")
+    expect(walker.c).toBe("i")
+    walker.skip(0)
+    expect(walker.c).toBe("i")
+    walker.skip(5)
+    expect(walker.c).toBe(" ")
+    walker.skip(c => c === "x")
+    expect(walker.c).toBe(" ")
+    walker.skip(c => c === " ")
+    expect(walker.c).toBe("x")
+    walker.skip(5)
+    expect(walker.eof).toBe(true)
+  })
+
 })

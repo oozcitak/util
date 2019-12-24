@@ -1,3 +1,5 @@
+import { isNumber } from "."
+
 /**
  * Walks the code points of a string.
  */
@@ -24,7 +26,7 @@ export class StringWalker {
 
     this._first = this._index < this._length ? this._chars.charCodeAt(this._index) : -1
     this._second = this._index < this._length - 1 ? this._chars.charCodeAt(this._index + 1) : -1
-    this._isSurrogatePair = (this._first >= 0xD800 && this._first <= 0xDBFF && 
+    this._isSurrogatePair = (this._first >= 0xD800 && this._first <= 0xDBFF &&
       this._second >= 0xDC00 && this._second <= 0xDFFF)
   }
 
@@ -89,7 +91,7 @@ export class StringWalker {
 
     this._first = this._index < this._length ? this._chars.charCodeAt(this._index) : -1
     this._second = this._index < this._length - 1 ? this._chars.charCodeAt(this._index + 1) : -1
-    this._isSurrogatePair = (this._first >= 0xD800 && this._first <= 0xDBFF && 
+    this._isSurrogatePair = (this._first >= 0xD800 && this._first <= 0xDBFF &&
       this._second >= 0xDC00 && this._second <= 0xDFFF)
 
     return this._chars.slice(this._index, this._index + charCount)
@@ -132,7 +134,7 @@ export class StringWalker {
 
     this._first = this._index < this._length ? this._chars.charCodeAt(this._index) : -1
     this._second = this._index < this._length - 1 ? this._chars.charCodeAt(this._index + 1) : -1
-    this._isSurrogatePair = (this._first >= 0xD800 && this._first <= 0xDBFF && 
+    this._isSurrogatePair = (this._first >= 0xD800 && this._first <= 0xDBFF &&
       this._second >= 0xDC00 && this._second <= 0xDFFF)
 
     return true
@@ -150,7 +152,7 @@ export class StringWalker {
     const second = this._index > 0 ? this._chars.charCodeAt(this._index - 1) : -1
     const first = this._index > 1 ? this._chars.charCodeAt(this._index - 2) : -1
 
-    this._isSurrogatePair = (first >= 0xD800 && first <= 0xDBFF && 
+    this._isSurrogatePair = (first >= 0xD800 && first <= 0xDBFF &&
       second >= 0xDC00 && second <= 0xDFFF)
     this._index -= this._isSurrogatePair ? 2 : 1
 
@@ -174,7 +176,7 @@ export class StringWalker {
       this._index = 0
       this._first = this._index < this._length ? this._chars.charCodeAt(this._index) : -1
       this._second = this._index < this._length - 1 ? this._chars.charCodeAt(this._index + 1) : -1
-      this._isSurrogatePair = (this._first >= 0xD800 && this._first <= 0xDBFF && 
+      this._isSurrogatePair = (this._first >= 0xD800 && this._first <= 0xDBFF &&
         this._second >= 0xDC00 && this._second <= 0xDFFF)
     } else if (reference === SeekOrigin.End) {
       this._codePoint = undefined
@@ -194,6 +196,52 @@ export class StringWalker {
     } else {
       count = -count
       while (n < count && this.prev()) { n++ }
+    }
+  }
+
+  /**
+   * Consumes a number of code points.
+   * 
+   * @param count - number of code points to take
+   */
+  take(countOrFunc: number | ((char: string) => boolean)): string {
+    if (isNumber(countOrFunc)) {
+      if (countOrFunc === 0) return ""
+
+      let str = ""
+      let n = 0
+      while (n < countOrFunc) {
+        str += this.c
+        this.next()
+        n++
+      }
+      return str
+    } else {
+      if (!countOrFunc(this.c)) return ""
+
+      let str = this.c
+      while (this.next() && countOrFunc(this.c)) {
+        str += this.c
+      }
+      return str
+    }
+  }
+
+  /**
+   * Skips a number of code points.
+   * 
+   * @param count - number of code points to skip
+   */
+  skip(countOrFunc: number | ((char: string) => boolean)): void {
+    if (isNumber(countOrFunc)) {
+      if (countOrFunc === 0) return
+
+      let n = 0
+      while (n < countOrFunc && this.next()) { n++ }
+    } else {
+      if (!countOrFunc(this.c)) return
+
+      while (this.next() && countOrFunc(this.c)) { }
     }
   }
 
