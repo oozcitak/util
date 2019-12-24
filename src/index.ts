@@ -1,6 +1,6 @@
 export { ObjectCache } from './ObjectCache'
 export { CompareCache } from './CompareCache'
-export { StringWalker } from './StringWalker'
+export { StringWalker, SeekOrigin } from './StringWalker'
 export { Lazy } from './Lazy'
 
 /**
