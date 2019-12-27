@@ -247,7 +247,7 @@ export function isEmpty(x: any): boolean {
  * 
  * @param x - a variable to check
  */
-export function isPlainObject(x: any): boolean {
+export function isPlainObject(x: any): x is { [key: string]: any } {
   if (isObject(x)) {
     const proto = Object.getPrototypeOf(x)
     const ctor = proto.constructor
