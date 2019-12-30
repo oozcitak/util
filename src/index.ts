@@ -1,4 +1,4 @@
-export { ObjectCache } from './ObjectCache'
+export { FixedSizeSet } from './FixedSizeSet'
 export { CompareCache } from './CompareCache'
 export { StringWalker, SeekOrigin } from './StringWalker'
 export { Lazy } from './Lazy'

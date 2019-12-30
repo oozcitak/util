@@ -1,9 +1,9 @@
 import * as util from "../src"
 
-describe('DOMObjectCache', () => {
+describe('FixedSizeSet', () => {
   
   test('add()', () => {
-    const cache = new util.ObjectCache<number>()
+    const cache = new util.FixedSizeSet<number>()
     cache.add(1)
     cache.add(2)
     cache.add(3)
@@ -11,7 +11,7 @@ describe('DOMObjectCache', () => {
   })
 
   test('add() with limit', () => {
-    const cache = new util.ObjectCache<number>(3)
+    const cache = new util.FixedSizeSet<number>(3)
     for (let i = 0; i < 10; i++) {
       cache.add(i)
     }
@@ -19,7 +19,7 @@ describe('DOMObjectCache', () => {
   })
 
   test('remove()', () => {
-    const cache = new util.ObjectCache<number>()
+    const cache = new util.FixedSizeSet<number>()
     cache.add(1)
     cache.add(2)
     cache.add(3)
@@ -31,7 +31,7 @@ describe('DOMObjectCache', () => {
   })
 
   test('clear()', () => {
-    const cache = new util.ObjectCache<number>()
+    const cache = new util.FixedSizeSet<number>()
     cache.add(1)
     cache.add(2)
     cache.add(3)
@@ -41,7 +41,7 @@ describe('DOMObjectCache', () => {
   })
 
   test('forEach', () => {
-    const cache = new util.ObjectCache<number>()
+    const cache = new util.FixedSizeSet<number>()
     cache.add(1)
     cache.add(2)
     cache.add(3)
@@ -51,7 +51,7 @@ describe('DOMObjectCache', () => {
   })
 
   test('entries()', () => {
-    const cache = new util.ObjectCache<number>()
+    const cache = new util.FixedSizeSet<number>()
     cache.add(1)
     cache.add(2)
     cache.add(3)
@@ -59,7 +59,7 @@ describe('DOMObjectCache', () => {
   })
 
   test('iterator', () => {
-    const cache = new util.ObjectCache<number>()
+    const cache = new util.FixedSizeSet<number>()
     cache.add(1)
     cache.add(2)
     cache.add(3)
@@ -71,7 +71,7 @@ describe('DOMObjectCache', () => {
   })
 
   test('length', () => {
-    const cache = new util.ObjectCache<number>()
+    const cache = new util.FixedSizeSet<number>()
     cache.add(1)
     cache.add(2)
     cache.add(3)
