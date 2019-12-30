@@ -18,15 +18,15 @@ describe('FixedSizeSet', () => {
     expect([...cache.entries()]).toEqual([7, 8, 9])
   })
 
-  test('remove()', () => {
+  test('delete()', () => {
     const cache = new util.FixedSizeSet<number>()
     cache.add(1)
     cache.add(2)
     cache.add(3)
     expect([...cache.entries()]).toEqual([1, 2, 3])
-    cache.remove(2)
+    cache.delete(2)
     expect([...cache.entries()]).toEqual([1, 3])
-    cache.remove(4)
+    cache.delete(4)
     expect([...cache.entries()]).toEqual([1, 3])
   })
 
@@ -70,12 +70,12 @@ describe('FixedSizeSet', () => {
     expect([...items]).toEqual([1, 2, 3])
   })
 
-  test('length', () => {
+  test('size', () => {
     const cache = new util.FixedSizeSet<number>()
     cache.add(1)
     cache.add(2)
     cache.add(3)
-    expect(cache.length).toBe(3)
+    expect(cache.size).toBe(3)
   })
 
 })
