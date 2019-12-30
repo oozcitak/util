@@ -99,10 +99,10 @@ export class FixedSizeSet<T> implements Set<T> {
   }
   
   /**
-   * Iterates through the items in the set.
+   * Returns the string tag of the set.
    */
   get [Symbol.toStringTag](): string {
-    return "[object Set]"
+    return "Set"
   }
 
 }
