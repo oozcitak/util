@@ -14,6 +14,9 @@ export class StringWalker {
   private _first: number = -1
   private _second: number = -1
 
+  private _startMark: number
+  private _endMark: number
+
   /**
    * Initializes a new `StringWalker`.
    * 
@@ -28,6 +31,9 @@ export class StringWalker {
     this._second = this._index < this._length - 1 ? this._chars.charCodeAt(this._index + 1) : -1
     this._isSurrogatePair = (this._first >= 0xD800 && this._first <= 0xDBFF &&
       this._second >= 0xDC00 && this._second <= 0xDFFF)
+
+    this._startMark = 0
+    this._endMark = 0  
   }
 
   /**
@@ -243,6 +249,28 @@ export class StringWalker {
 
       while (this.next() && countOrFunc(this.c)) { }
     }
+  }
+
+  /**
+   * Sets the start index to the current position for the `getMarked` function.
+   */
+  markStart(): void {
+    this._startMark = this._index
+    this._endMark = this._index
+  }
+
+  /**
+   * Sets the end index to the current position for the `getMarked` function.
+   */
+  markEnd(): void {
+    this._endMark = this._index
+  }
+
+  /**
+   * Gets the string between start and marks.
+   */
+  getMarked(): string {
+    return this._chars.slice(this._startMark, this._endMark)
   }
 
 }

@@ -221,4 +221,13 @@ describe('StringWalker', () => {
     expect(walker.eof).toBe(true)
   })
 
+  test('skip()', () => {
+    const walker = new StringWalker("  input   x")
+    walker.skip(c => c === " ")
+    walker.markStart()
+    walker.skip(c => c !== " ")
+    walker.markEnd()
+    expect(walker.getMarked()).toBe("input")
+  })
+
 })
