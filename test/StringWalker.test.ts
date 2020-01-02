@@ -76,6 +76,18 @@ describe('StringWalker', () => {
     expect(walker.peek()).toBe("")
   })
 
+  test('peekChar()', () => {
+    const walker = new StringWalker("input  x")
+    expect(walker.peekChar()).toBe("input  x")
+    expect(walker.peekChar(5)).toBe("input")
+    walker.seekChar(5)
+    expect(walker.peekChar()).toBe("  x")
+    expect(walker.peekChar(2)).toBe("  ")
+    expect(walker.peekChar(200)).toBe("  x")
+    walker.seek(10)
+    expect(walker.peekChar()).toBe("")
+  })
+
   test('startsWith()', () => {
     const walker = new StringWalker("inp😀ut")
     walker.next()
@@ -110,6 +122,20 @@ describe('StringWalker', () => {
     expect(walker.next()).toBe(false)
   })
 
+  test('nextChar()', () => {
+    const walker = new StringWalker("input  x")
+    expect(walker.c).toBe("i")
+    walker.nextChar()
+    walker.nextChar()
+    expect(walker.c).toBe("p")
+    walker.nextChar()
+    expect(walker.c).toBe("u")
+    walker.seekChar(10)
+    expect(walker.c).toBe("")
+    expect(walker.eof).toBe(true)
+    expect(walker.nextChar()).toBe(false)
+  })
+
   test('prev()', () => {
     const walker = new StringWalker("inp😀ut\uDE00x")
     walker.seek(10)
@@ -132,8 +158,25 @@ describe('StringWalker', () => {
     walker.prev()
     expect(walker.c).toBe("i")
     expect(walker.eof).toBe(false)
+    expect(walker.prev()).toBe(false)
   })
  
+  test('prevChar()', () => {
+    const walker = new StringWalker("input  x")
+    walker.seekChar(10)
+    expect(walker.c).toBe("")
+    walker.prevChar()
+    expect(walker.c).toBe("x")
+    walker.prevChar()
+    walker.prevChar()
+    walker.prevChar()
+    expect(walker.c).toBe("t")
+    walker.seekChar(-10)
+    expect(walker.c).toBe("i")
+    expect(walker.eof).toBe(false)
+    expect(walker.prevChar()).toBe(false)
+  })
+
   test('seek()', () => {
     const walker = new StringWalker("inp😀ut\uDE00x")
     walker.seek(10)
@@ -194,6 +237,26 @@ describe('StringWalker', () => {
     expect(walker.eof).toBe(true)
   })
 
+  test('seekChar()', () => {
+    const walker = new StringWalker("input  x")
+    walker.seekChar(10)
+    expect(walker.c).toBe("")
+    walker.seekChar(-10)
+    expect(walker.c).toBe("i")
+    walker.seekChar(0, util.SeekOrigin.Start)
+    expect(walker.c).toBe("i")
+    walker.seekChar(0, util.SeekOrigin.End)
+    expect(walker.c).toBe("")
+    walker.seekChar(-10)
+    expect(walker.c).toBe("i")
+    walker.seekChar(3)
+    expect(walker.c).toBe("u")
+    walker.seekChar(1)
+    expect(walker.peekChar(2)).toBe("t ")
+    walker.seekChar(10)
+    expect(walker.eof).toBe(true)
+  })
+
   test('take()', () => {
     const walker = new StringWalker("input   x")
     expect(walker.take(0)).toBe("")
@@ -203,6 +266,18 @@ describe('StringWalker', () => {
     expect(walker.take(c => c === " ")).toBe("   ")
     expect(walker.c).toBe("x")
     walker.take(1)
+    expect(walker.eof).toBe(true)
+  })
+
+  test('takeChar()', () => {
+    const walker = new StringWalker("input   x")
+    expect(walker.takeChar(0)).toBe("")
+    expect(walker.takeChar(5)).toBe("input")
+    expect(walker.c).toBe(" ")
+    expect(walker.takeChar(c => c === "x")).toBe("")
+    expect(walker.takeChar(c => c === " ")).toBe("   ")
+    expect(walker.c).toBe("x")
+    walker.takeChar(1)
     expect(walker.eof).toBe(true)
   })
 
@@ -221,13 +296,19 @@ describe('StringWalker', () => {
     expect(walker.eof).toBe(true)
   })
 
-  test('skip()', () => {
-    const walker = new StringWalker("  input   x")
-    walker.skip(c => c === " ")
-    walker.markStart()
-    walker.skip(c => c !== " ")
-    walker.markEnd()
-    expect(walker.getMarked()).toBe("input")
+  test('skipChar()', () => {
+    const walker = new StringWalker("input   x")
+    expect(walker.c).toBe("i")
+    walker.skipChar(0)
+    expect(walker.c).toBe("i")
+    walker.skipChar(5)
+    expect(walker.c).toBe(" ")
+    walker.skipChar(c => c === "x")
+    expect(walker.c).toBe(" ")
+    walker.skipChar(c => c === " ")
+    expect(walker.c).toBe("x")
+    walker.skipChar(5)
+    expect(walker.eof).toBe(true)
   })
 
 })

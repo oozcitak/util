@@ -104,6 +104,19 @@ export class StringWalker {
   }
 
   /**
+   * Returns the substring including the current character without changing
+   * the current position. Returns character points instead of code points.
+   * 
+   * @param charCount - the number of character codes to return
+   */
+  peekChar(charCount?: number): string {
+    if (this.eof) return ""
+    if (charCount === undefined) return this._chars.slice(this._index)
+
+    return this._chars.slice(this._index, this._index + charCount)
+  }
+
+  /**
    * Determines whether the substring including the current character 
    * starts with the given string.
    * 
@@ -147,6 +160,25 @@ export class StringWalker {
   }
 
   /**
+   * Moves to the next character code.
+   */
+  nextChar(): boolean {
+    if (this.eof) return false
+
+    this._codePoint = undefined
+    this._c = undefined
+
+    this._index++
+
+    this._first = this._index < this._length ? this._chars.charCodeAt(this._index) : -1
+    this._second = this._index < this._length - 1 ? this._chars.charCodeAt(this._index + 1) : -1
+    this._isSurrogatePair = (this._first >= 0xD800 && this._first <= 0xDBFF &&
+      this._second >= 0xDC00 && this._second <= 0xDFFF)
+
+    return true
+  }
+
+  /**
    * Moves to the previous code point.
    */
   prev(): boolean {
@@ -164,6 +196,25 @@ export class StringWalker {
 
     this._first = this._isSurrogatePair ? first : second
     this._second = this._isSurrogatePair ? second : -1
+
+    return true
+  }
+
+  /**
+   * Moves to the previous character code.
+   */
+  prevChar(): boolean {
+    if (this._index === 0) return false
+
+    this._codePoint = undefined
+    this._c = undefined
+
+    this._index--
+
+    this._first = this._index < this._length ? this._chars.charCodeAt(this._index) : -1
+    this._second = this._index < this._length - 1 ? this._chars.charCodeAt(this._index + 1) : -1
+    this._isSurrogatePair = (this._first >= 0xD800 && this._first <= 0xDBFF &&
+      this._second >= 0xDC00 && this._second <= 0xDFFF)
 
     return true
   }
@@ -206,6 +257,33 @@ export class StringWalker {
   }
 
   /**
+   * Seeks a number of character codes relative to the current position.
+   * 
+   * @param charCount - the number of character codes to return
+   * @param reference - reference of the seek operation
+   */
+  seekChar(charCount: number, reference = SeekOrigin.Current): void {
+    this._codePoint = undefined
+    this._c = undefined
+
+    if (reference === SeekOrigin.Start) {
+      this._index = charCount
+    } else if (reference === SeekOrigin.End) {
+      this._index = this._length - charCount
+    } else {
+      this._index += charCount
+    }
+
+    if (this._index < 0) this._index = 0
+    if (this._index > this._length) this._index = this._length
+    
+    this._first = this._index < this._length ? this._chars.charCodeAt(this._index) : -1
+    this._second = this._index < this._length - 1 ? this._chars.charCodeAt(this._index + 1) : -1
+    this._isSurrogatePair = (this._first >= 0xD800 && this._first <= 0xDBFF &&
+      this._second >= 0xDC00 && this._second <= 0xDFFF)
+  }
+
+  /**
    * Consumes a number of code points.
    * 
    * @param count - number of code points to take
@@ -234,6 +312,29 @@ export class StringWalker {
   }
 
   /**
+   * Consumes a number of character codes.
+   * 
+   * @param countOrFunc - the number of character codes to take
+   */
+  takeChar(countOrFunc: number | ((char: string) => boolean)): string {
+    if (isNumber(countOrFunc)) {
+      if (countOrFunc === 0) return ""
+
+      const str = this._chars.slice(this._index, this._index + countOrFunc)
+      this.seekChar(countOrFunc)
+
+      return str
+    } else {
+      if (!countOrFunc(this.c)) return ""
+
+      const startIndex = this._index
+      while (this.nextChar() && countOrFunc(this.c)) { }
+
+      return this._chars.slice(startIndex, this._index)
+    }
+  }
+
+  /**
    * Skips a number of code points.
    * 
    * @param count - number of code points to skip
@@ -248,29 +349,23 @@ export class StringWalker {
       if (!countOrFunc(this.c)) return
 
       while (this.next() && countOrFunc(this.c)) { }
-    }
+    }    
   }
 
   /**
-   * Sets the start index to the current position for the `getMarked` function.
+   * Skips a number of character codes.
+   * 
+   * @param countOrFunc - the number of character codes to skip
    */
-  markStart(): void {
-    this._startMark = this._index
-    this._endMark = this._index
-  }
+  skipChar(countOrFunc: number | ((char: string) => boolean)): void {
+    if (isNumber(countOrFunc)) {
+      if (countOrFunc === 0) return
+      this.seekChar(countOrFunc)
+    } else {
+      if (!countOrFunc(this.c)) return
 
-  /**
-   * Sets the end index to the current position for the `getMarked` function.
-   */
-  markEnd(): void {
-    this._endMark = this._index
-  }
-
-  /**
-   * Gets the string between start and marks.
-   */
-  getMarked(): string {
-    return this._chars.slice(this._startMark, this._endMark)
+      while (this.nextChar() && countOrFunc(this.c)) { }
+    }   
   }
 
 }
