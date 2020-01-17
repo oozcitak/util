@@ -1,25 +1,17 @@
 import * as util from "../src"
 
-describe('FixedSizeSet', () => {
+describe('IndexedSet', () => {
   
   test('add()', () => {
-    const cache = new util.FixedSizeSet<number>()
+    const cache = new util.IndexedSet<number>()
     cache.add(1)
     cache.add(2)
     cache.add(3)
     expect([...cache.values()]).toEqual([1, 2, 3])
   })
 
-  test('add() with limit', () => {
-    const cache = new util.FixedSizeSet<number>(3)
-    for (let i = 0; i < 10; i++) {
-      cache.add(i)
-    }
-    expect([...cache.values()]).toEqual([7, 8, 9])
-  })
-
   test('has()', () => {
-    const cache = new util.FixedSizeSet<number>()
+    const cache = new util.IndexedSet<number>()
     cache.add(1)
     cache.add(2)
     cache.add(3)
@@ -28,7 +20,7 @@ describe('FixedSizeSet', () => {
   })
 
   test('delete()', () => {
-    const cache = new util.FixedSizeSet<number>()
+    const cache = new util.IndexedSet<number>()
     cache.add(1)
     cache.add(2)
     cache.add(3)
@@ -40,7 +32,7 @@ describe('FixedSizeSet', () => {
   })
 
   test('clear()', () => {
-    const cache = new util.FixedSizeSet<number>()
+    const cache = new util.IndexedSet<number>()
     cache.add(1)
     cache.add(2)
     cache.add(3)
@@ -50,7 +42,7 @@ describe('FixedSizeSet', () => {
   })
 
   test('forEach', () => {
-    const cache = new util.FixedSizeSet<number>()
+    const cache = new util.IndexedSet<number>()
     cache.add(1)
     cache.add(2)
     cache.add(3)
@@ -60,7 +52,7 @@ describe('FixedSizeSet', () => {
   })
 
   test('keys()', () => {
-    const cache = new util.FixedSizeSet<number>()
+    const cache = new util.IndexedSet<number>()
     cache.add(1)
     cache.add(2)
     cache.add(3)
@@ -68,7 +60,7 @@ describe('FixedSizeSet', () => {
   })
 
   test('values()', () => {
-    const cache = new util.FixedSizeSet<number>()
+    const cache = new util.IndexedSet<number>()
     cache.add(1)
     cache.add(2)
     cache.add(3)
@@ -76,7 +68,7 @@ describe('FixedSizeSet', () => {
   })
 
   test('entries()', () => {
-    const cache = new util.FixedSizeSet<number>()
+    const cache = new util.IndexedSet<number>()
     cache.add(1)
     cache.add(2)
     cache.add(3)
@@ -84,7 +76,7 @@ describe('FixedSizeSet', () => {
   })
 
   test('iterator', () => {
-    const cache = new util.FixedSizeSet<number>()
+    const cache = new util.IndexedSet<number>()
     cache.add(1)
     cache.add(2)
     cache.add(3)
@@ -96,16 +88,39 @@ describe('FixedSizeSet', () => {
   })
 
   test('size', () => {
-    const cache = new util.FixedSizeSet<number>()
+    const cache = new util.IndexedSet<number>()
     cache.add(1)
     cache.add(2)
     cache.add(3)
     expect(cache.size).toBe(3)
   })
 
+  test('indexed getter', () => {
+    const cache = new util.IndexedSet<string>()
+    cache.add("a")
+    cache.add("b")
+    cache.add("c")
+    expect(cache[0]).toBe("a")
+    expect(cache[1]).toBe("b")
+    expect(cache[2]).toBe("c")
+    expect(cache[-1]).toBeUndefined()
+    expect(cache[100]).toBeUndefined()
+  })
+
+  test('indexed setter', () => {
+    const cache = new util.IndexedSet<string>()
+    cache.add("a")
+    cache.add("b")
+    cache.add("c")
+    cache[-1] = "x"
+    cache[1] = "x"
+    cache[100] = "x"
+    expect([...cache.values()]).toEqual(["a", "x", "c"])
+  })
+
   test('toString', () => {
-    const cache = new util.FixedSizeSet<number>()
-    expect(cache.toString()).toBe("[object FixedSizeSet]")
+    const cache = new util.IndexedSet<number>()
+    expect(cache.toString()).toBe("[object IndexedSet]")
   })
 
 })

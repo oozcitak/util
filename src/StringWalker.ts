@@ -14,9 +14,6 @@ export class StringWalker {
   private _first: number = -1
   private _second: number = -1
 
-  private _startMark: number
-  private _endMark: number
-
   /**
    * Initializes a new `StringWalker`.
    * 
@@ -31,9 +28,6 @@ export class StringWalker {
     this._second = this._index < this._length - 1 ? this._chars.charCodeAt(this._index + 1) : -1
     this._isSurrogatePair = (this._first >= 0xD800 && this._first <= 0xDBFF &&
       this._second >= 0xDC00 && this._second <= 0xDFFF)
-
-    this._startMark = 0
-    this._endMark = 0  
   }
 
   /**

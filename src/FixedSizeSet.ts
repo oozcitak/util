@@ -102,7 +102,7 @@ export class FixedSizeSet<T> implements Set<T> {
    * Returns the string tag of the set.
    */
   get [Symbol.toStringTag](): string {
-    return "Set"
+    return "FixedSizeSet"
   }
 
 }
