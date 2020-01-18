@@ -16,9 +16,7 @@ export class IndexedSet<T> implements Set<T> {
      */
     get: (target: IndexedSet<T>, key: PropertyKey, receiver: any): T | undefined => {
       let index: number | undefined
-      if (isNumber(key)) {
-        index = key
-      } else if (isString(key)) {
+      if (isString(key)) {
         const num = Number(key)
         if (!isNaN(num)) index = num
       }
@@ -35,9 +33,7 @@ export class IndexedSet<T> implements Set<T> {
      */
     set: (target: IndexedSet<T>, key: PropertyKey, value: any, receiver: any): boolean => {
       let index: number | undefined
-      if (isNumber(key)) {
-        index = key
-      } else if (isString(key)) {
+      if (isString(key)) {
         const num = Number(key)
         if (!isNaN(num)) index = num
       }
