@@ -221,6 +221,8 @@ describe('util', () => {
   test('isEmpty', () => {
     expect(util.isEmpty([])).toBe(true)
     expect(util.isEmpty({})).toBe(true)
+    expect(util.isEmpty(new Set())).toBe(true)
+    expect(util.isEmpty(new Set([1,2,3]))).toBe(false)
     expect(util.isEmpty(new Map())).toBe(true)
     expect(util.isEmpty(new Map([["a", 1]]))).toBe(false)
     expect(util.isEmpty(["x"])).toBe(false)
