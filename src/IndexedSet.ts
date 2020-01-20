@@ -1,5 +1,4 @@
-import { isNumber } from "."
-import { isString } from "util"
+import { isString } from "."
 
 /**
  * Represents a set of objects with indexed access. Uses double the memory of an
@@ -16,9 +15,7 @@ export class IndexedSet<T> implements Set<T> {
      */
     get: (target: IndexedSet<T>, key: PropertyKey, receiver: any): T | undefined => {
       let index: number | undefined
-      if (isNumber(key)) {
-        index = key
-      } else if (isString(key)) {
+      if (isString(key)) {
         const num = Number(key)
         if (!isNaN(num)) index = num
       }
@@ -35,9 +32,7 @@ export class IndexedSet<T> implements Set<T> {
      */
     set: (target: IndexedSet<T>, key: PropertyKey, value: any, receiver: any): boolean => {
       let index: number | undefined
-      if (isNumber(key)) {
-        index = key
-      } else if (isString(key)) {
+      if (isString(key)) {
         const num = Number(key)
         if (!isNaN(num)) index = num
       }
@@ -89,6 +84,7 @@ export class IndexedSet<T> implements Set<T> {
       for (let i = index; i < this._items.length; i++) {
         const nextItem = this._items[i]
         const nextIndex = this._index.get(nextItem)
+        /* istanbul ignore else */
         if (nextIndex !== undefined) {
           this._index.set(nextItem, i)
         }

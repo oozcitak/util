@@ -7,6 +7,7 @@ describe('IndexedSet', () => {
     cache.add(1)
     cache.add(2)
     cache.add(3)
+    cache.add(3)
     expect([...cache.values()]).toEqual([1, 2, 3])
   })
 

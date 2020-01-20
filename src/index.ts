@@ -38,47 +38,66 @@ export function applyMixin(baseClass: any, mixinClass: any, ...overrides: string
  * @param overwrite - if set to `true` defaults object always overwrites object 
  * values, whether they are `undefined` or not.
  */
-export function applyDefaults<T>(
-  obj: { [key: string]: any } | undefined,
-  defaults: { [key: string]: any }, overwrite: boolean = false): T {
+export function applyDefaults(obj: { [key: string]: any } | undefined,
+  defaults: { [key: string]: any }, overwrite: boolean = false): { [key: string]: any } {
 
   const result = clone(obj || {})
 
-  for (const [key, val] of forEachObject(defaults)) {
+  forEachObject(defaults, (key, val) => {
     if (isObject(val)) {
       result[key] = applyDefaults(result[key], val)
     } else if (overwrite || result[key] === undefined) {
       result[key] = val
     }
-  }
+  })
 
-  return <T>result
+  return result
 }
 
 /**
- * Iterates over items pairs of an array.
+ * Iterates over items of an array or set.
  * 
- * @param arr - array to iterate
+ * @param arr - array or set to iterate
+ * @param callback - a callback function which receives each array item as its
+ * single argument
+ * @param thisArg - the value of this inside callback
  */
-export function* forEachArray<T>(arr: Array<T>): IterableIterator<T> {
-  yield *arr
+export function forEachArray<T>(arr: Array<T> | Set<T>, callback: ((item: T) => void), thisArg?: any): void {
+  arr.forEach(callback, thisArg)
 }
 
 /**
  * Iterates over key/value pairs of a map or object.
  * 
  * @param obj - map or object to iterate
+ * @param callback - a callback function which receives object key as its first
+ * argument and object value as its second argument
+ * @param thisArg - the value of this inside callback
  */
-export function* forEachObject<T>(obj: Map<string, T> | { [key: string]: T }):
-  IterableIterator<[string, T]> {
+export function forEachObject<T>(obj: Map<string, T> | { [key: string]: T },
+  callback: ((key: string, item: T) => void), thisArg?: any): void {
   if (isMap(obj)) {
-    yield *obj
+    obj.forEach((value, key) => callback.call(thisArg, key, value))
   } else {
     for (const key in obj) {
-      /* istanbul ignore next */
-      if (!obj.hasOwnProperty(key)) continue
-      yield [key, obj[key]]
+      /* istanbul ignore else */
+      if (obj.hasOwnProperty(key)) {
+        callback.call(thisArg, key, obj[key])
+      }
     }
+  }
+}
+
+/**
+ * Returns the number of entries in an array or set.
+ * 
+ * @param arr - array or set
+ */
+export function arrayLength(obj: any[] | Set<any>): number {
+  if (isSet(obj)) {
+    return obj.size
+  } else {
+    return obj.length
   }
 }
 
@@ -131,7 +150,8 @@ export function removeObjectValue<T>(obj: Map<string, T> |
  * 
  * @param obj - an object
  */
-export function clone<T extends Function | any[] | Object>(obj: T): T {
+export function clone<T extends string | number | boolean | null  | undefined |
+  Function | any[] | { [key: string]: any }>(obj: T): T {
   if (isFunction(obj)) {
     return obj
   } else if (isArray(obj)) {
@@ -210,6 +230,15 @@ export function isObject(x: any): x is { [key: string]: any } {
  */
 export function isArray(x: any): x is any[] {
   return Array.isArray(x)
+}
+
+/**
+ * Type guard for sets.
+ * 
+ * @param x - a variable to check
+ */
+export function isSet(x: any): x is Set<any> {
+  return x instanceof Set
 }
 
 /**

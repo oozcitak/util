@@ -75,29 +75,40 @@ describe('util', () => {
 
   test('forEachArray', () => {
     const arr1 = [1, 2, 3, 4]
-    const arr2 = []
-    for (const i of util.forEachArray(arr1)) {
-      arr2.push(i + 10)
-    }
+    const arr2: number[] = []
+    util.forEachArray(arr1, i => arr2.push(i + 10))
+    expect(arr2).toEqual([11, 12, 13, 14])
+  })
+
+  test('forEachArray with set', () => {
+    const arr1 = new Set([1, 2, 3, 4])
+    const arr2: number[] = []
+    util.forEachArray(arr1, i => arr2.push(i + 10))
     expect(arr2).toEqual([11, 12, 13, 14])
   })
 
   test('forEachObject', () => {
     const obj1 = { a: 1, b: 2, c: 3, d: 4 }
     const obj2: { [key: string]: number } = { }
-    for (const [key, val] of util.forEachObject(obj1)) {
-      obj2[key + "x"] = val + 10
-    }
+    util.forEachObject(obj1, (key, val) => obj2[key + "x"] = val + 10)
     expect(obj2).toEqual({ ax: 11, bx: 12, cx: 13, dx: 14 })
   })
 
   test('forEachObject with map', () => {
     const obj1 = new Map<string, number>([["a", 1], ["b", 2], ["c", 3], ["d", 4]])
     const obj2: { [key: string]: number } = { }
-    for (const [key, val] of util.forEachObject(obj1)) {
-      obj2[key + "x"] = val + 10
-    }
+    util.forEachObject(obj1, (key, val) => obj2[key + "x"] = val + 10)
     expect(obj2).toEqual({ ax: 11, bx: 12, cx: 13, dx: 14 })
+  })
+
+  test('arrayLength', () => {
+    const arr = [1, 2, 3, 4]
+    expect(util.arrayLength(arr)).toBe(4)
+  })
+
+  test('arrayLength with set', () => {
+    const arr = new Set([1, 2, 3, 4])
+    expect(util.arrayLength(arr)).toBe(4)
   })
 
   test('objectLength', () => {
