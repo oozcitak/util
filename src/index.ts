@@ -1,4 +1,3 @@
-export { IndexedSet } from './IndexedSet'
 export { FixedSizeSet } from './FixedSizeSet'
 export { ObjectCache } from './ObjectCache'
 export { CompareCache } from './CompareCache'
