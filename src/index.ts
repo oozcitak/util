@@ -1,4 +1,5 @@
 export { FixedSizeSet } from './FixedSizeSet'
+export { FastIterationSet } from './FastIterationSet'
 export { ObjectCache } from './ObjectCache'
 export { CompareCache } from './CompareCache'
 export { Lazy } from './Lazy'
