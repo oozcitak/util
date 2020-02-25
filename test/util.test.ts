@@ -19,15 +19,18 @@ describe('util', () => {
   test('applyDefaults', () => {
     const a = {
       val1: 24,
-      val2: undefined
+      val2: undefined,
+      val3: (() => {})
     }
     const b = {
       val1: 42,
-      val2: "not undefined"
+      val2: "not undefined",
+      val3: (() => {})
     }
-    const a_b = util.applyDefaults(a, b) as { val1: number, val2: string }
+    const a_b = util.applyDefaults(a, b) as { val1: number, val2: string, val3: (() => void) }
     expect(a_b.val1).toBe(24)
     expect(a_b.val2).toBe("not undefined")
+    expect(typeof a_b.val3).toBe("function")
   })
 
   test('applyDefaults with empty object', () => {
