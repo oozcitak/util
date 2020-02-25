@@ -44,9 +44,7 @@ export function applyDefaults(obj: { [key: string]: any } | undefined,
   const result = clone(obj || {})
 
   forEachObject(defaults, (key, val) => {
-    if (isFunction(val)) {
-      result[key] = val
-    } else if (isObject(val)) {
+    if (isObject(val) && !isFunction(val)) {
       result[key] = applyDefaults(result[key], val)
     } else if (overwrite || result[key] === undefined) {
       result[key] = val
