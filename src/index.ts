@@ -1,5 +1,4 @@
 export { FixedSizeSet } from './FixedSizeSet'
-export { UniqueArray } from './UniqueArray'
 export { ObjectCache } from './ObjectCache'
 export { CompareCache } from './CompareCache'
 export { Lazy } from './Lazy'
@@ -44,7 +43,7 @@ export function applyDefaults(obj: { [key: string]: any } | undefined,
   const result = clone(obj || {})
 
   forEachObject(defaults, (key, val) => {
-    if (isObject(val) && !isFunction(val)) {
+    if (isPlainObject(val)) {
       result[key] = applyDefaults(result[key], val)
     } else if (overwrite || result[key] === undefined) {
       result[key] = val

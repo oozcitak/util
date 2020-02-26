@@ -20,7 +20,7 @@ describe('util', () => {
     const a = {
       val1: 24,
       val2: undefined,
-      val3: (() => {})
+      val3: undefined
     }
     const b = {
       val1: 42,
