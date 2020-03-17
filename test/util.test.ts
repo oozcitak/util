@@ -76,6 +76,24 @@ describe('util', () => {
     expect(a_b.val2).toBe("not undefined")
   })
 
+  test('applyDefaults with nested overwrites', () => {
+    const a = {
+      val: {
+        a: 23,
+        b: undefined
+      }
+    }
+    const b = {
+      val: {
+        a: 42,
+        b: "not undefined"
+      }
+    }
+    const a_b = util.applyDefaults(a, b, true) as { val: { a: number, b: string } }
+    expect(a_b.val.a).toBe(42)
+    expect(a_b.val.b).toBe("not undefined")
+  })
+
   test('forEachArray', () => {
     const arr1 = [1, 2, 3, 4]
     const arr2: number[] = []

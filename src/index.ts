@@ -44,7 +44,7 @@ export function applyDefaults(obj: { [key: string]: any } | undefined,
 
   forEachObject(defaults, (key, val) => {
     if (isPlainObject(val)) {
-      result[key] = applyDefaults(result[key], val)
+      result[key] = applyDefaults(result[key], val, overwrite)
     } else if (overwrite || result[key] === undefined) {
       result[key] = val
     }
