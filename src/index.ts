@@ -14,17 +14,19 @@ export { Lazy } from './Lazy'
  */
 export function applyMixin(baseClass: any, mixinClass: any, ...overrides: string[]): void {
   Object.getOwnPropertyNames(mixinClass.prototype).forEach(name => {
-    if (overrides.includes(name)) {
-      const orgPropDesc = Object.getOwnPropertyDescriptor(baseClass.prototype, name)
-      /* istanbul ignore else */
-      if (orgPropDesc) {
-        Object.defineProperty(baseClass.prototype, "_" + name, orgPropDesc)
+    if (name !== "constructor") {
+      if (overrides.includes(name)) {
+        const orgPropDesc = Object.getOwnPropertyDescriptor(baseClass.prototype, name)
+        /* istanbul ignore else */
+        if (orgPropDesc) {
+          Object.defineProperty(baseClass.prototype, "_" + name, orgPropDesc)
+        }
       }
-    }
-    const propDesc = Object.getOwnPropertyDescriptor(mixinClass.prototype, name)
-    /* istanbul ignore else */
-    if (propDesc) {
-      Object.defineProperty(baseClass.prototype, name, propDesc)
+      const propDesc = Object.getOwnPropertyDescriptor(mixinClass.prototype, name)
+      /* istanbul ignore else */
+      if (propDesc) {
+        Object.defineProperty(baseClass.prototype, name, propDesc)
+      }
     }
   })
 }

@@ -14,6 +14,7 @@ describe('util', () => {
     const item = new ClassA()
     expect(item.val()).toBe(42)
     expect(item._val()).toBe(24)
+    expect(item.constructor.name).toBe("ClassA")
   })
 
   test('applyDefaults', () => {
