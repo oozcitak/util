@@ -16,7 +16,7 @@ export { StringWalker } from './StringWalker'
 export function applyMixin(baseClass: any, mixinClass: any, ...overrides: string[]): void {
   Object.getOwnPropertyNames(mixinClass.prototype).forEach(name => {
     if (name !== "constructor") {
-      if (overrides.includes(name)) {
+      if (overrides.indexOf(name) !== -1) {
         const orgPropDesc = Object.getOwnPropertyDescriptor(baseClass.prototype, name)
         /* istanbul ignore else */
         if (orgPropDesc) {
