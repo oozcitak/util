@@ -26,12 +26,12 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "typescript": "*",
-    "jest": "*",
-    "ts-jest": "*",
-    "coveralls": "*",
+    "@types/jest": "*",
     "@types/node": "*",
-    "@types/jest": "*"
+    "coveralls": "*",
+    "jest": "*",
+    "ts-jest": "^26.3.0",
+    "typescript": "*"
   },
   "jest": {
     "transform": {
