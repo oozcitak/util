@@ -1,75 +1,77 @@
-import * as util from "../src"
+import { suite, test } from 'node:test'
+import { strictEqual } from 'node:assert'
+import * as util from "../lib/index.js"
 
-describe('StringWalker', () => {
+suite('StringWalker', () => {
 
   const StringWalker = util.StringWalker
 
   test('constructor', () => {
     const walker = new StringWalker("input")
-    expect(walker.length).toBe(5)
+    strictEqual(walker.length, 5)
   })
 
   test('eof', () => {
     const walker = new StringWalker("input")
-    expect(walker.eof).toBe(false)
+    strictEqual(walker.eof, false)
     walker.pointer = 10
-    expect(walker.eof).toBe(true)
+    strictEqual(walker.eof, true)
   })
 
   test('length', () => {
     const walker = new StringWalker("input")
-    expect(walker.length).toBe(5)
+    strictEqual(walker.length, 5)
   })
 
   test('codePoint()', () => {
     const walker = new StringWalker("input")
-    expect(walker.codePoint()).toBe(0x69)
-    expect(walker.codePoint()).toBe(0x69)
+    strictEqual(walker.codePoint(), 0x69)
+    strictEqual(walker.codePoint(), 0x69)
     walker.pointer = 10
-    expect(walker.codePoint()).toBe(-1)
+    strictEqual(walker.codePoint(), -1)
   })
 
   test('c()', () => {
     const walker = new StringWalker("input")
-    expect(walker.c()).toBe("i")
-    expect(walker.c()).toBe("i")
+    strictEqual(walker.c(), "i")
+    strictEqual(walker.c(), "i")
     walker.pointer = 10
-    expect(walker.c()).toBe("")
+    strictEqual(walker.c(), "")
   })
 
   test('remaining()', () => {
     const walker = new StringWalker("input")
-    expect(walker.remaining()).toBe("nput")
-    expect(walker.remaining()).toBe("nput")
+    strictEqual(walker.remaining(), "nput")
+    strictEqual(walker.remaining(), "nput")
     walker.pointer = 10
-    expect(walker.remaining()).toBe("")
+    strictEqual(walker.remaining(), "")
   })
 
   test('substring()', () => {
     const walker = new StringWalker("input")
-    expect(walker.substring()).toBe("input")
-    expect(walker.substring()).toBe("input")
+    strictEqual(walker.substring(), "input")
+    strictEqual(walker.substring(), "input")
     walker.pointer = 10
-    expect(walker.substring()).toBe("")
+    strictEqual(walker.substring(), "")
   })
 
   test('pointer', () => {
     const walker = new StringWalker("input")
-    expect(walker.pointer).toBe(0)
-    expect(walker.c()).toBe("i")
+    strictEqual(walker.pointer, 0)
+    strictEqual(walker.c(), "i")
     walker.pointer = 0
-    expect(walker.c()).toBe("i")
+    strictEqual(walker.c(), "i")
     walker.pointer = 1
-    expect(walker.c()).toBe("n")
+    strictEqual(walker.c(), "n")
     walker.pointer = 2
-    expect(walker.c()).toBe("p")
+    strictEqual(walker.c(), "p")
     walker.pointer = 3
-    expect(walker.c()).toBe("u")
+    strictEqual(walker.c(), "u")
     walker.pointer = 4
-    expect(walker.c()).toBe("t")
+    strictEqual(walker.c(), "t")
     walker.pointer = 5
-    expect(walker.c()).toBe("")
-    expect(walker.eof).toBe(true)
+    strictEqual(walker.c(), "")
+    strictEqual(walker.eof, true)
   })
 
 })

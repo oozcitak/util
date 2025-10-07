@@ -1,16 +1,19 @@
-import { Lazy }from "../src"
+import { suite, test } from 'node:test'
+import { deepEqual, strictEqual } from 'node:assert'
+import { Lazy } from "../lib/index.js"
 
-describe('Lazy', () => {
+suite('Lazy', () => {
 
   test('value()', () => {
     const obj = { test: "val" }
     const lazy = new Lazy<{ [key:string]: string }>(() => { return obj })
-    expect((lazy as any)._value).toBeUndefined()
-    expect((lazy as any)._initialized).toBe(false)
-    expect(lazy.value).toBe(obj)
-    expect((lazy as any)._value).toBe(obj)
-    expect((lazy as any)._initialized).toBe(true)
-    expect(lazy.value).toBe(obj)
+
+    strictEqual((lazy as any)._value, undefined)
+    strictEqual((lazy as any)._initialized, false)
+    deepEqual(lazy.value, obj)
+    deepEqual((lazy as any)._value, obj)
+    strictEqual((lazy as any)._initialized, true)
+    deepEqual(lazy.value, obj)
   })
 
 })
