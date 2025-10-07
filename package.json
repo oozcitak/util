@@ -1,6 +1,7 @@
 {
   "name": "@oozcitak/util",
-  "version": "8.3.9",
+  "version": "9.0.0",
+  "type": "module",
   "keywords": [
     "util",
     "js"
@@ -19,32 +20,19 @@
   },
   "main": "./lib/index",
   "engines": {
-    "node": ">=8.0"
+    "node": ">=20.0"
   },
   "files": [
     "lib/**/*"
   ],
-  "dependencies": {},
   "devDependencies": {
-    "@types/jest": "*",
-    "@types/node": "*",
-    "coveralls": "*",
-    "jest": "*",
-    "ts-jest": "^26.3.0",
-    "typescript": "*"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testEnvironment": "node",
-    "collectCoverageFrom": [
-      "src/**/*.{ts,tsx}"
-    ]
+    "@types/node": "^20.0.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9"
   },
   "scripts": {
-    "compile": "rm -rf lib && tsc",
-    "test": "npm run compile && jest --coverage",
+    "test": "tsx --test --experimental-test-coverage test/*test.ts",
+    "cover": "tsx --test --experimental-test-coverage --test-reporter=lcov --test-reporter-destination=./coverage/lcov.info test/*test.ts",
     "publish-public": "npm run test && npm publish --access public"
   }
 }

@@ -1,13 +1,15 @@
-import * as util from "../src"
+import { suite, test } from 'node:test'
+import { deepEqual, strictEqual } from 'node:assert'
+import * as util from "../lib/index.js"
 
-describe('ObjectCache', () => {
-  
+suite('ObjectCache', () => {
+
   test('set()', () => {
     const cache = new util.ObjectCache<number, string>()
     cache.set(1, "a")
     cache.set(2, "b")
     cache.set(3, "c")
-    expect([...cache.keys()]).toEqual([1, 2, 3])
+    deepEqual([...cache.keys()], [1, 2, 3])
   })
 
   test('set() with limit', () => {
@@ -15,7 +17,7 @@ describe('ObjectCache', () => {
     for (let i = 0; i < 10; i++) {
       cache.set(i, "q")
     }
-    expect([...cache.keys()]).toEqual([7, 8, 9])
+    deepEqual([...cache.keys()], [7, 8, 9])
   })
 
   test('get()', () => {
@@ -23,8 +25,8 @@ describe('ObjectCache', () => {
     cache.set(1, "a")
     cache.set(2, "b")
     cache.set(3, "c")
-    expect(cache.get(1)).toBe("a")
-    expect(cache.get(4)).toBeUndefined()
+    strictEqual(cache.get(1), "a")
+    strictEqual(cache.get(4), undefined)
   })
 
   test('has()', () => {
@@ -32,8 +34,8 @@ describe('ObjectCache', () => {
     cache.set(1, "a")
     cache.set(2, "b")
     cache.set(3, "c")
-    expect(cache.has(1)).toBe(true)
-    expect(cache.has(4)).toBe(false)
+    strictEqual(cache.has(1), true)
+    strictEqual(cache.has(4), false)
   })
 
   test('delete()', () => {
@@ -41,11 +43,11 @@ describe('ObjectCache', () => {
     cache.set(1, "a")
     cache.set(2, "b")
     cache.set(3, "c")
-    expect([...cache.keys()]).toEqual([1, 2, 3])
+    deepEqual([...cache.keys()], [1, 2, 3])
     cache.delete(2)
-    expect([...cache.keys()]).toEqual([1, 3])
+    deepEqual([...cache.keys()], [1, 3])
     cache.delete(4)
-    expect([...cache.keys()]).toEqual([1, 3])
+    deepEqual([...cache.keys()], [1, 3])
   })
 
   test('clear()', () => {
@@ -53,9 +55,9 @@ describe('ObjectCache', () => {
     cache.set(1, "a")
     cache.set(2, "b")
     cache.set(3, "c")
-    expect([...cache.keys()]).toEqual([1, 2, 3])
+    deepEqual([...cache.keys()], [1, 2, 3])
     cache.clear()
-    expect([...cache.keys()]).toEqual([ ])
+    deepEqual([...cache.keys()], [ ])
   })
 
   test('forEach', () => {
@@ -66,8 +68,8 @@ describe('ObjectCache', () => {
     const keys: number[] = []
     const values: string[] = []
     cache.forEach((key, value) => { keys.push(key); values.push(value) })
-    expect([...keys]).toEqual([1, 2, 3])
-    expect([...values]).toEqual(["a", "b", "c"])
+    deepEqual([...keys], [1, 2, 3])
+    deepEqual([...values], ["a", "b", "c"])
   })
 
 
@@ -76,7 +78,7 @@ describe('ObjectCache', () => {
     cache.set(1, "a")
     cache.set(2, "b")
     cache.set(3, "c")
-    expect([...cache.keys()]).toEqual([1, 2, 3])
+    deepEqual([...cache.keys()], [1, 2, 3])
   })
 
   test('values()', () => {
@@ -84,7 +86,7 @@ describe('ObjectCache', () => {
     cache.set(1, "a")
     cache.set(2, "b")
     cache.set(3, "c")
-    expect([...cache.values()]).toEqual(["a", "b", "c"])
+    deepEqual([...cache.values()], ["a", "b", "c"])
   })
 
   test('entries()', () => {
@@ -92,7 +94,7 @@ describe('ObjectCache', () => {
     cache.set(1, "a")
     cache.set(2, "b")
     cache.set(3, "c")
-    expect([...cache.entries()]).toEqual([[1, "a"], [2, "b"], [3, "c"]])
+    deepEqual([...cache.entries()], [[1, "a"], [2, "b"], [3, "c"]])
   })
 
   test('iterator', () => {
@@ -104,7 +106,7 @@ describe('ObjectCache', () => {
     for (const [key, value] of cache) {
       keys.push(key)
     }
-    expect([...keys]).toEqual([1, 2, 3])
+    deepEqual([...keys], [1, 2, 3])
   })
 
   test('size', () => {
@@ -112,12 +114,12 @@ describe('ObjectCache', () => {
     cache.set(1, "a")
     cache.set(2, "b")
     cache.set(3, "c")
-    expect(cache.size).toBe(3)
+    strictEqual(cache.size, 3)
   })
 
   test('toString', () => {
     const cache = new util.ObjectCache<number, string>()
-    expect(cache.toString()).toBe("[object ObjectCache]")
+    strictEqual(cache.toString(), "[object ObjectCache]")
   })
 
 })

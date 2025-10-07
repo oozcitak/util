@@ -1,13 +1,15 @@
-import * as util from "../src"
+import { suite, test } from 'node:test'
+import { deepEqual, strictEqual } from 'node:assert'
+import * as util from "../lib/index.js"
 
-describe('FixedSizeSet', () => {
-  
+suite('FixedSizeSet', () => {
+
   test('add()', () => {
     const cache = new util.FixedSizeSet<number>()
     cache.add(1)
     cache.add(2)
     cache.add(3)
-    expect([...cache.values()]).toEqual([1, 2, 3])
+    deepEqual([...cache.values()], [1, 2, 3])
   })
 
   test('add() with limit', () => {
@@ -15,7 +17,7 @@ describe('FixedSizeSet', () => {
     for (let i = 0; i < 10; i++) {
       cache.add(i)
     }
-    expect([...cache.values()]).toEqual([7, 8, 9])
+    deepEqual([...cache.values()], [7, 8, 9])
   })
 
   test('has()', () => {
@@ -23,8 +25,8 @@ describe('FixedSizeSet', () => {
     cache.add(1)
     cache.add(2)
     cache.add(3)
-    expect(cache.has(1)).toBe(true)
-    expect(cache.has(4)).toBe(false)
+    strictEqual(cache.has(1), true)
+    strictEqual(cache.has(4), false)
   })
 
   test('delete()', () => {
@@ -32,11 +34,11 @@ describe('FixedSizeSet', () => {
     cache.add(1)
     cache.add(2)
     cache.add(3)
-    expect([...cache.values()]).toEqual([1, 2, 3])
+    deepEqual([...cache.values()], [1, 2, 3])
     cache.delete(2)
-    expect([...cache.values()]).toEqual([1, 3])
+    deepEqual([...cache.values()], [1, 3])
     cache.delete(4)
-    expect([...cache.values()]).toEqual([1, 3])
+    deepEqual([...cache.values()], [1, 3])
   })
 
   test('clear()', () => {
@@ -44,9 +46,9 @@ describe('FixedSizeSet', () => {
     cache.add(1)
     cache.add(2)
     cache.add(3)
-    expect([...cache.values()]).toEqual([1, 2, 3])
+    deepEqual([...cache.values()], [1, 2, 3])
     cache.clear()
-    expect([...cache.values()]).toEqual([ ])
+    deepEqual([...cache.values()], [ ])
   })
 
   test('forEach', () => {
@@ -56,7 +58,7 @@ describe('FixedSizeSet', () => {
     cache.add(3)
     const items: number[] = []
     cache.forEach(item => items.push(item))
-    expect([...items]).toEqual([1, 2, 3])
+    deepEqual([...items], [1, 2, 3])
   })
 
   test('keys()', () => {
@@ -64,7 +66,7 @@ describe('FixedSizeSet', () => {
     cache.add(1)
     cache.add(2)
     cache.add(3)
-    expect([...cache.keys()]).toEqual([1, 2, 3])
+    deepEqual([...cache.keys()], [1, 2, 3])
   })
 
   test('values()', () => {
@@ -72,7 +74,7 @@ describe('FixedSizeSet', () => {
     cache.add(1)
     cache.add(2)
     cache.add(3)
-    expect([...cache.values()]).toEqual([1, 2, 3])
+    deepEqual([...cache.values()], [1, 2, 3])
   })
 
   test('entries()', () => {
@@ -80,7 +82,7 @@ describe('FixedSizeSet', () => {
     cache.add(1)
     cache.add(2)
     cache.add(3)
-    expect([...cache.entries()]).toEqual([[1, 1], [2, 2], [3, 3]])
+    deepEqual([...cache.entries()], [[1, 1], [2, 2], [3, 3]])
   })
 
   test('iterator', () => {
@@ -92,7 +94,7 @@ describe('FixedSizeSet', () => {
     for (const item of cache) {
       items.push(item)
     }
-    expect([...items]).toEqual([1, 2, 3])
+    deepEqual([...items], [1, 2, 3])
   })
 
   test('size', () => {
@@ -100,12 +102,12 @@ describe('FixedSizeSet', () => {
     cache.add(1)
     cache.add(2)
     cache.add(3)
-    expect(cache.size).toBe(3)
+    strictEqual(cache.size, 3)
   })
 
   test('toString', () => {
     const cache = new util.FixedSizeSet<number>()
-    expect(cache.toString()).toBe("[object FixedSizeSet]")
+    strictEqual(cache.toString(), "[object FixedSizeSet]")
   })
 
 })

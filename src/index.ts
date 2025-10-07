@@ -1,15 +1,15 @@
-export { FixedSizeSet } from './FixedSizeSet'
-export { ObjectCache } from './ObjectCache'
-export { CompareCache } from './CompareCache'
-export { Lazy } from './Lazy'
-export { StringWalker } from './StringWalker'
+export { FixedSizeSet } from './FixedSizeSet.js'
+export { ObjectCache } from './ObjectCache.js'
+export { CompareCache } from './CompareCache.js'
+export { Lazy } from './Lazy.js'
+export { StringWalker } from './StringWalker.js'
 
 /**
  * Applies the mixin to a given class.
- * 
+ *
  * @param baseClass - class to receive the mixin
  * @param mixinClass - mixin class
- * @param overrides - an array with names of function overrides. Base class 
+ * @param overrides - an array with names of function overrides. Base class
  * functions whose names are in this array will be kept by prepending an
  * underscore to their names.
  */
@@ -34,20 +34,20 @@ export function applyMixin(baseClass: any, mixinClass: any, ...overrides: string
 
 /**
  * Applies default values to the given object.
- * 
+ *
  * @param obj - an object
  * @param defaults - an object with default values
- * @param overwrite - if set to `true` defaults object always overwrites object 
+ * @param overwrite - if set to `true` defaults object always overwrites object
  * values, whether they are `undefined` or not.
  */
-export function applyDefaults(obj: { [key: string]: any } | undefined,
-  defaults: { [key: string]: any }, overwrite: boolean = false): { [key: string]: any } {
+export function applyDefaults(obj: { [key: string]: unknown } | undefined,
+  defaults: { [key: string]: any }, overwrite: boolean = false): { [key: string]: unknown } {
 
   const result = clone(obj || {})
 
   forEachObject(defaults, (key, val) => {
     if (isPlainObject(val)) {
-      result[key] = applyDefaults(result[key], val, overwrite)
+      result[key] = applyDefaults(result[key] as { [key: string]: unknown }, val, overwrite)
     } else if (overwrite || result[key] === undefined) {
       result[key] = val
     }
@@ -58,7 +58,7 @@ export function applyDefaults(obj: { [key: string]: any } | undefined,
 
 /**
  * Iterates over items of an array or set.
- * 
+ *
  * @param arr - array or set to iterate
  * @param callback - a callback function which receives each array item as its
  * single argument
@@ -70,7 +70,7 @@ export function forEachArray<T>(arr: Array<T> | Set<T>, callback: ((item: T) => 
 
 /**
  * Iterates over key/value pairs of a map or object.
- * 
+ *
  * @param obj - map or object to iterate
  * @param callback - a callback function which receives object key as its first
  * argument and object value as its second argument
@@ -92,7 +92,7 @@ export function forEachObject<T>(obj: Map<string, T> | { [key: string]: T },
 
 /**
  * Returns the number of entries in an array or set.
- * 
+ *
  * @param arr - array or set
  */
 export function arrayLength(obj: any[] | Set<any>): number {
@@ -105,7 +105,7 @@ export function arrayLength(obj: any[] | Set<any>): number {
 
 /**
  * Returns the number of entries in a map or object.
- * 
+ *
  * @param obj - map or object
  */
 export function objectLength(obj: Map<string, any> | { [key: string]: any }):
@@ -119,7 +119,7 @@ export function objectLength(obj: Map<string, any> | { [key: string]: any }):
 
 /**
  * Gets the value of a key from a map or object.
- * 
+ *
  * @param obj - map or object
  * @param key - the key to retrieve
  */
@@ -131,10 +131,10 @@ export function getObjectValue<T>(obj: Map<string, T> |
     return obj[key]
   }
 }
-  
+
 /**
  * Removes a property from a map or object.
- * 
+ *
  * @param obj - map or object
  * @param key - the key to remove
  */
@@ -146,14 +146,14 @@ export function removeObjectValue<T>(obj: Map<string, T> |
     delete obj[key]
   }
 }
-  
+
 /**
  * Deep clones the given object.
- * 
+ *
  * @param obj - an object
  */
-export function clone<T extends string | number | boolean | null  | undefined |
-  Function | any[] | { [key: string]: any }>(obj: T): T {
+export function clone<T extends string | number | boolean | null  | undefined | unknown |
+  Function | any[] | { [key: string]: unknown }>(obj: T): T {
   if (isFunction(obj)) {
     return obj
   } else if (isArray(obj)) {
@@ -162,7 +162,7 @@ export function clone<T extends string | number | boolean | null  | undefined |
       result.push(clone(item))
     }
     return result
-  } else if (isObject(obj)) {
+  } else if (isPlainObject(obj)) {
     const result: any = {}
     for (const key in obj) {
       /* istanbul ignore next */
@@ -179,7 +179,7 @@ export function clone<T extends string | number | boolean | null  | undefined |
 
 /**
  * Type guard for boolean types
- * 
+ *
  * @param x - a variable to type check
  */
 export function isBoolean(x: any): x is boolean {
@@ -188,7 +188,7 @@ export function isBoolean(x: any): x is boolean {
 
 /**
  * Type guard for numeric types
- * 
+ *
  * @param x - a variable to type check
  */
 export function isNumber(x: any): x is number {
@@ -197,7 +197,7 @@ export function isNumber(x: any): x is number {
 
 /**
  * Type guard for strings
- * 
+ *
  * @param x - a variable to type check
  */
 export function isString(x: any): x is string {
@@ -206,18 +206,18 @@ export function isString(x: any): x is string {
 
 /**
  * Type guard for function objects
- * 
+ *
  * @param x - a variable to type check
  */
-export function isFunction(x: any): x is Function {
-  return !!x && Object.prototype.toString.call(x) === '[object Function]'
+export function isFunction(x: any): x is CallableFunction {
+  return !!x && typeof x === 'function'
 }
 
 /**
  * Type guard for JS objects
- * 
+ *
  * _Note:_ Functions are objects too
- * 
+ *
  * @param x - a variable to type check
  */
 export function isObject(x: any): x is { [key: string]: any } {
@@ -227,7 +227,7 @@ export function isObject(x: any): x is { [key: string]: any } {
 
 /**
  * Type guard for arrays
- * 
+ *
  * @param x - a variable to type check
  */
 export function isArray(x: any): x is any[] {
@@ -236,7 +236,7 @@ export function isArray(x: any): x is any[] {
 
 /**
  * Type guard for sets.
- * 
+ *
  * @param x - a variable to check
  */
 export function isSet(x: any): x is Set<any> {
@@ -245,7 +245,7 @@ export function isSet(x: any): x is Set<any> {
 
 /**
  * Type guard for maps.
- * 
+ *
  * @param x - a variable to check
  */
 export function isMap(x: any): x is Map<string, any> {
@@ -254,7 +254,7 @@ export function isMap(x: any): x is Map<string, any> {
 
 /**
  * Determines if `x` is an empty Array or an Object with no own properties.
- * 
+ *
  * @param x - a variable to check
  */
 export function isEmpty(x: any): boolean {
@@ -269,7 +269,7 @@ export function isEmpty(x: any): boolean {
       if(x.hasOwnProperty(key)) {
         return false
       }
-    }    
+    }
     return true
   }
 
@@ -278,10 +278,10 @@ export function isEmpty(x: any): boolean {
 
 /**
  * Determines if `x` is a plain Object.
- * 
+ *
  * @param x - a variable to check
  */
-export function isPlainObject(x: any): x is { [key: string]: any } {
+export function isPlainObject(x: any): x is { [key: string]: unknown } {
   if (isObject(x)) {
     const proto = Object.getPrototypeOf(x)
     const ctor = proto.constructor
@@ -295,7 +295,7 @@ export function isPlainObject(x: any): x is { [key: string]: any } {
 
 /**
  * Determines if `x` is an iterable Object.
- * 
+ *
  * @param x - a variable to check
  */
 export function isIterable(x: any): boolean {
@@ -315,7 +315,7 @@ export function getValue(obj: any): any {
 
 /**
  * UTF-8 encodes the given string.
- * 
+ *
  * @param input - a string
  */
 export function utf8Encode(input: string): Uint8Array {
@@ -347,13 +347,13 @@ export function utf8Encode(input: string): Uint8Array {
 		}
 		bytes[byteIndex++] = char & 63 | 128
   }
-  
+
 	return bytes.subarray(0, byteIndex)
 }
 
 /**
  * UTF-8 decodes the given byte sequence into a string.
- * 
+ *
  * @param bytes - a byte sequence
  */
 export function utf8Decode(bytes: Uint8Array): string {
@@ -392,6 +392,6 @@ export function utf8Decode(bytes: Uint8Array): string {
       throw new Error("Code point exceeds UTF-16 limit.")
     }
   }
-  
+
 	return result
 }
