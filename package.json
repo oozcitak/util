@@ -1,6 +1,6 @@
 {
   "name": "@oozcitak/util",
-  "version": "9.0.0",
+  "version": "9.0.2",
   "type": "module",
   "keywords": [
     "util",
@@ -26,13 +26,13 @@
     "lib/**/*"
   ],
   "devDependencies": {
-    "@types/node": "^20.0.0",
+    "@types/node": "^24.7.0",
     "tsx": "^4.20.6",
-    "typescript": "^5.9"
+    "typescript": "^5.9.3"
   },
   "scripts": {
-    "test": "tsx --test --experimental-test-coverage test/*test.ts",
-    "cover": "tsx --test --experimental-test-coverage --test-reporter=lcov --test-reporter-destination=./coverage/lcov.info test/*test.ts",
-    "publish-public": "npm run test && npm publish --access public"
+    "test": "tsc && tsx --test --experimental-test-coverage test/*test.ts",
+    "cover": "tsc && tsx --test --experimental-test-coverage --test-reporter=lcov --test-reporter-destination=./coverage/lcov.info test/*test.ts",
+    "publish-public": "tsc && npm run cover && npm publish --access public"
   }
 }

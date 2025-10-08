@@ -13,7 +13,7 @@ export { StringWalker } from './StringWalker.js'
  * functions whose names are in this array will be kept by prepending an
  * underscore to their names.
  */
-export function applyMixin(baseClass: any, mixinClass: any, ...overrides: string[]): void {
+export function applyMixin(baseClass: any, mixinClass: any, ...overrides: string[]) {
   Object.getOwnPropertyNames(mixinClass.prototype).forEach(name => {
     if (name !== "constructor") {
       if (overrides.indexOf(name) !== -1) {
@@ -41,7 +41,7 @@ export function applyMixin(baseClass: any, mixinClass: any, ...overrides: string
  * values, whether they are `undefined` or not.
  */
 export function applyDefaults(obj: { [key: string]: unknown } | undefined,
-  defaults: { [key: string]: any }, overwrite: boolean = false): { [key: string]: unknown } {
+  defaults: { [key: string]: any }, overwrite: boolean = false) {
 
   const result = clone(obj || {})
 
@@ -64,7 +64,7 @@ export function applyDefaults(obj: { [key: string]: unknown } | undefined,
  * single argument
  * @param thisArg - the value of this inside callback
  */
-export function forEachArray<T>(arr: Array<T> | Set<T>, callback: ((item: T) => void), thisArg?: any): void {
+export function forEachArray<T>(arr: Array<T> | Set<T>, callback: ((item: T) => void), thisArg?: any) {
   arr.forEach(callback, thisArg)
 }
 
@@ -77,7 +77,7 @@ export function forEachArray<T>(arr: Array<T> | Set<T>, callback: ((item: T) => 
  * @param thisArg - the value of this inside callback
  */
 export function forEachObject<T>(obj: Map<string, T> | { [key: string]: T },
-  callback: ((key: string, item: T) => void), thisArg?: any): void {
+  callback: ((key: string, item: T) => void), thisArg?: any) {
   if (isMap(obj)) {
     obj.forEach((value, key) => callback.call(thisArg, key, value))
   } else {
@@ -95,7 +95,7 @@ export function forEachObject<T>(obj: Map<string, T> | { [key: string]: T },
  *
  * @param arr - array or set
  */
-export function arrayLength(obj: any[] | Set<any>): number {
+export function arrayLength(obj: any[] | Set<any>) {
   if (isSet(obj)) {
     return obj.size
   } else {
@@ -108,8 +108,7 @@ export function arrayLength(obj: any[] | Set<any>): number {
  *
  * @param obj - map or object
  */
-export function objectLength(obj: Map<string, any> | { [key: string]: any }):
-  number {
+export function objectLength(obj: Map<string, any> | { [key: string]: any }) {
   if (isMap(obj)) {
     return obj.size
   } else {
@@ -124,7 +123,7 @@ export function objectLength(obj: Map<string, any> | { [key: string]: any }):
  * @param key - the key to retrieve
  */
 export function getObjectValue<T>(obj: Map<string, T> |
-  { [key: string]: T }, key: string): T | undefined {
+  { [key: string]: T }, key: string) {
   if (isMap(obj)) {
     return obj.get(key)
   } else {
@@ -139,7 +138,7 @@ export function getObjectValue<T>(obj: Map<string, T> |
  * @param key - the key to remove
  */
 export function removeObjectValue<T>(obj: Map<string, T> |
-  { [key: string]: T }, key: string): void {
+  { [key: string]: T }, key: string) {
   if (isMap(obj)) {
     obj.delete(key)
   } else {
@@ -153,7 +152,7 @@ export function removeObjectValue<T>(obj: Map<string, T> |
  * @param obj - an object
  */
 export function clone<T extends string | number | boolean | null  | undefined | unknown |
-  Function | any[] | { [key: string]: unknown }>(obj: T): T {
+  Function | any[] | { [key: string]: unknown }>(obj: T) {
   if (isFunction(obj)) {
     return obj
   } else if (isArray(obj)) {
@@ -305,7 +304,7 @@ export function isIterable(x: any): boolean {
 /**
  * Gets the primitive value of an object.
  */
-export function getValue(obj: any): any {
+export function getValue(obj: any) {
   if (isFunction(obj.valueOf)) {
     return obj.valueOf()
   } else {
@@ -318,7 +317,7 @@ export function getValue(obj: any): any {
  *
  * @param input - a string
  */
-export function utf8Encode(input: string): Uint8Array {
+export function utf8Encode(input: string) {
   const bytes = new Uint8Array(input.length * 4)
   let byteIndex = 0
 	for (let i = 0; i < input.length; i++) {
@@ -356,7 +355,7 @@ export function utf8Encode(input: string): Uint8Array {
  *
  * @param bytes - a byte sequence
  */
-export function utf8Decode(bytes: Uint8Array): string {
+export function utf8Decode(bytes: Uint8Array) {
 	let result = ""
 	let i = 0
 	while (i < bytes.length) {

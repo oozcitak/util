@@ -13,7 +13,7 @@ export class StringWalker {
 
   /**
    * Initializes a new `StringWalker`.
-   * 
+   *
    * @param input - input string
    */
   constructor(input: string) {
@@ -24,18 +24,18 @@ export class StringWalker {
   /**
    * Determines if the current position is beyond the end of string.
    */
-  get eof(): boolean { return this._pointer >= this._length }
+  get eof() { return this._pointer >= this._length }
 
   /**
    * Returns the number of code points in the input string.
    */
-  get length(): number { return this._length }
+  get length() { return this._length }
 
   /**
    * Returns the current code point. Returns `-1` if the position is beyond
    * the end of string.
    */
-  codePoint(): number {
+  codePoint() {
     if (this._codePoint === undefined) {
       if (this.eof) {
         this._codePoint = -1
@@ -53,10 +53,10 @@ export class StringWalker {
   }
 
   /**
-   * Returns the current character. Returns an empty string if the position is 
+   * Returns the current character. Returns an empty string if the position is
    * beyond the end of string.
    */
-  c(): string {
+  c() {
     if (this._c === undefined) {
       this._c = (this.eof ? "" : this._chars[this._pointer])
     }
@@ -66,9 +66,9 @@ export class StringWalker {
   /**
    * Returns the remaining string.
    */
-  remaining(): string {
+  remaining() {
     if (this._remaining === undefined) {
-      this._remaining = (this.eof ? 
+      this._remaining = (this.eof ?
         "" : this._chars.slice(this._pointer + 1).join(''))
     }
     return this._remaining
@@ -77,9 +77,9 @@ export class StringWalker {
   /**
    * Returns the substring from the current character to the end of string.
    */
-  substring(): string {
+  substring() {
     if (this._substring === undefined) {
-      this._substring = (this.eof ? 
+      this._substring = (this.eof ?
         "" : this._chars.slice(this._pointer).join(''))
     }
     return this._substring
@@ -88,7 +88,7 @@ export class StringWalker {
   /**
    * Gets or sets the current position.
    */
-  get pointer() : number { return this._pointer }
+  get pointer() { return this._pointer }
   set pointer(val: number) {
     if (val === this._pointer) return
 

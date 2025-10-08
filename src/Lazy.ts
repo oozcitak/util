@@ -9,7 +9,7 @@ export class Lazy<T> {
 
   /**
    * Initializes a new instance of `Lazy`.
-   * 
+   *
    * @param initFunc - initializer function
    */
   public constructor(initFunc: () => T) {
@@ -17,10 +17,10 @@ export class Lazy<T> {
     this._initFunc = initFunc
   }
 
-  /** 
+  /**
    * Gets the value of the object.
    */
-  get value(): T {
+  get value() {
     if (!this._initialized) {
       this._value = this._initFunc()
       this._initialized = true
