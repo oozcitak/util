@@ -1,24 +1,24 @@
 /**
  * Represents a set of objects with a size limit.
  */
-export class FixedSizeSet<T> implements Set<T> {
+export class FixedSizeSet<T> {
 
   private _limit: number
   private _items = new Set<T>()
 
   /**
    * Initializes a new instance of `FixedSizeSet`.
-   * 
+   *
    * @param limit - maximum number of items to keep in the set. When the limit
    * is exceeded the first item is removed from the set.
    */
-  public constructor(limit: number = 1000) { 
+  public constructor(limit: number = 1000) {
     this._limit = limit
   }
 
   /**
    * Adds a new item to the set.
-   * 
+   *
    * @param item - an item
    */
   add(item: T): this {
@@ -35,73 +35,73 @@ export class FixedSizeSet<T> implements Set<T> {
 
   /**
    * Removes an item from the set.
-   * 
+   *
    * @param item - an item
    */
-  delete(item: T): boolean {
+  delete(item: T) {
     return this._items.delete(item)
   }
 
   /**
    * Determines if an item is in the set.
-   * 
+   *
    * @param item - an item
    */
-  has(item: T): boolean {
+  has(item: T) {
     return this._items.has(item)
   }
 
   /**
    * Removes all items from the set.
    */
-  clear(): void {
+  clear() {
     this._items.clear()
   }
 
   /**
    * Gets the number of items in the set.
    */
-  get size(): number { return this._items.size }
+  get size() { return this._items.size }
 
   /**
    * Applies the given callback function to all elements of the set.
    */
-  forEach(callback: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void {
+  forEach(callback: (value: T, value2: T, set: this) => void, thisArg?: any): void {
     this._items.forEach(e => callback.call(thisArg, e, e, this))
   }
 
   /**
    * Iterates through the items in the set.
    */
-  *keys(): IterableIterator<T> {
+  *keys() {
     yield *this._items.keys()
   }
 
   /**
    * Iterates through the items in the set.
    */
-  *values(): IterableIterator<T> {
+  *values() {
     yield *this._items.values()
   }
 
   /**
    * Iterates through the items in the set.
    */
-  *entries(): IterableIterator<[T, T]> {
+  *entries() {
     yield *this._items.entries()
   }
 
   /**
    * Iterates through the items in the set.
    */
-  *[Symbol.iterator](): IterableIterator<T> {
+  *[Symbol.iterator]() {
     yield *this._items
   }
-  
+
   /**
    * Returns the string tag of the set.
    */
-  get [Symbol.toStringTag](): string {
+  get [Symbol.toStringTag]() {
     return "FixedSizeSet"
   }
 
