@@ -78,7 +78,7 @@ export function forEachArray<T>(arr: Array<T> | Set<T>, callback: ((item: T) => 
  */
 export function forEachObject<T>(obj: Map<string, T> | { [key: string]: T },
   callback: ((key: string, item: T) => void), thisArg?: any) {
-  if (isMap(obj)) {
+  if (isMap<T>(obj)) {
     obj.forEach((value, key) => callback.call(thisArg, key, value))
   } else {
     for (const key in obj) {
@@ -96,7 +96,7 @@ export function forEachObject<T>(obj: Map<string, T> | { [key: string]: T },
  * @param arr - array or set
  */
 export function arrayLength<T = unknown>(obj: T[] | Set<T>) {
-  if (isSet(obj)) {
+  if (isSet<T>(obj)) {
     return obj.size
   } else {
     return obj.length
@@ -219,7 +219,7 @@ export function isFunction<T = unknown>(x: any): x is ((...args: any[]) => T) {
  *
  * @param x - a variable to type check
  */
-export function isObject(x: any): x is ({ [key: string]: unknown }) {
+export function isObject<T = unknown>(x: any): x is ({ [key: string]: T }) {
   const type = typeof x
   return !!x && (type === 'function' || type === 'object')
 }
@@ -280,7 +280,7 @@ export function isEmpty(x: any): boolean {
  *
  * @param x - a variable to check
  */
-export function isPlainObject(x: any): x is ({ [key: string]: unknown }) {
+export function isPlainObject<T = unknown>(x: any): x is ({ [key: string]: T }) {
   if (isObject(x)) {
     const proto = Object.getPrototypeOf(x)
     const ctor = proto.constructor
