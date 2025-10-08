@@ -95,7 +95,7 @@ export function forEachObject<T>(obj: Map<string, T> | { [key: string]: T },
  *
  * @param arr - array or set
  */
-export function arrayLength(obj: any[] | Set<any>) {
+export function arrayLength<T = unknown>(obj: T[] | Set<T>) {
   if (isSet(obj)) {
     return obj.size
   } else {
@@ -208,7 +208,7 @@ export function isString(x: any): x is string {
  *
  * @param x - a variable to type check
  */
-export function isFunction(x: any): x is CallableFunction {
+export function isFunction<T = unknown>(x: any): x is ((...args: any[]) => T) {
   return !!x && typeof x === 'function'
 }
 
@@ -219,7 +219,7 @@ export function isFunction(x: any): x is CallableFunction {
  *
  * @param x - a variable to type check
  */
-export function isObject(x: any): x is { [key: string]: any } {
+export function isObject(x: any): x is ({ [key: string]: unknown }) {
   const type = typeof x
   return !!x && (type === 'function' || type === 'object')
 }
@@ -229,7 +229,7 @@ export function isObject(x: any): x is { [key: string]: any } {
  *
  * @param x - a variable to type check
  */
-export function isArray(x: any): x is any[] {
+export function isArray<T = unknown>(x: any): x is T[] {
   return Array.isArray(x)
 }
 
@@ -238,7 +238,7 @@ export function isArray(x: any): x is any[] {
  *
  * @param x - a variable to check
  */
-export function isSet(x: any): x is Set<any> {
+export function isSet<T = unknown>(x: any): x is Set<T> {
   return x instanceof Set
 }
 
@@ -247,7 +247,7 @@ export function isSet(x: any): x is Set<any> {
  *
  * @param x - a variable to check
  */
-export function isMap(x: any): x is Map<string, any> {
+export function isMap<T = unknown>(x: any): x is Map<string, T> {
   return x instanceof Map
 }
 
@@ -280,7 +280,7 @@ export function isEmpty(x: any): boolean {
  *
  * @param x - a variable to check
  */
-export function isPlainObject(x: any): x is { [key: string]: unknown } {
+export function isPlainObject(x: any): x is ({ [key: string]: unknown }) {
   if (isObject(x)) {
     const proto = Object.getPrototypeOf(x)
     const ctor = proto.constructor
@@ -297,7 +297,7 @@ export function isPlainObject(x: any): x is { [key: string]: unknown } {
  *
  * @param x - a variable to check
  */
-export function isIterable(x: any): boolean {
+export function isIterable<T = unknown>(x: any): Iterable<T> {
   return x && (typeof x[Symbol.iterator] === 'function')
 }
 
