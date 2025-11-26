@@ -1,7 +1,6 @@
 {
   "name": "@oozcitak/util",
-  "version": "9.0.4",
-  "type": "module",
+  "version": "10.0.0",
   "keywords": [
     "util",
     "js"
